@@ -1,4 +1,7 @@
-package com.github.industrialcraft.pyrobite;
+package com.github.industrialcraft.pyrobite.scene;
+
+import com.github.industrialcraft.pyrobite.entity.Entity;
+import com.github.industrialcraft.pyrobite.Scheduler;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,8 +1,9 @@
 package com.github.industrialcraft.pyrobite;
 
+import com.github.industrialcraft.pyrobite.entity.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 public class Scheduler {
@@ -28,7 +29,7 @@ public class Scheduler {
         tasks.clear();
     }
 
-    class SchedulerTask{
+    public class SchedulerTask {
         private int ticks;
         private Entity entity;
         private TaskData data;

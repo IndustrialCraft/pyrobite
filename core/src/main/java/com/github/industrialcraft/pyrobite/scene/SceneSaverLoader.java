@@ -1,5 +1,8 @@
-package com.github.industrialcraft.pyrobite;
+package com.github.industrialcraft.pyrobite.scene;
 
+import com.github.industrialcraft.pyrobite.*;
+import com.github.industrialcraft.pyrobite.entity.Entity;
+import com.github.industrialcraft.pyrobite.entity.EntityRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

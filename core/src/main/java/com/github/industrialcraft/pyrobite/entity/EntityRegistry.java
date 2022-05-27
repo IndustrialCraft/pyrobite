@@ -1,4 +1,4 @@
-package com.github.industrialcraft.pyrobite;
+package com.github.industrialcraft.pyrobite.entity;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

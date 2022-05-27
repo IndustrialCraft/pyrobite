@@ -1,9 +1,8 @@
 package com.github.industrialcraft.pyrobite.test;
 
 import com.github.industrialcraft.pyrobite.DamageType;
-import com.github.industrialcraft.pyrobite.Entity;
-import com.github.industrialcraft.pyrobite.EntityRegistry;
-import com.google.gson.JsonObject;
+import com.github.industrialcraft.pyrobite.entity.Entity;
+import com.github.industrialcraft.pyrobite.entity.EntityRegistry;
 
 public class TestEntity extends Entity {
     static {
@@ -11,7 +10,6 @@ public class TestEntity extends Entity {
     }
     @Override
     public void onTick() {
-
     }
 
     @Override

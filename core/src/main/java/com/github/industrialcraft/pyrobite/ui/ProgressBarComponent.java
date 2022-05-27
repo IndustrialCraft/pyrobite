@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import sun.security.provider.SHA;
 
 public class ProgressBarComponent extends UIComponent{
+
     public Color color;
     public float completion;
     public float x;
@@ -14,6 +15,7 @@ public class ProgressBarComponent extends UIComponent{
     public float width;
     public float height;
     public float margin;
+
     public ProgressBarComponent(Color color, float completion, float x, float y, float width, float height) {
         this.color = color;
         this.completion = completion;
