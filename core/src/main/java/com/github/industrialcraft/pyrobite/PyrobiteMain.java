@@ -40,10 +40,10 @@ public class PyrobiteMain extends ApplicationAdapter {
 		this.ui = new UI();
 
 		this.ui.addComponent(new TerminalComponent());
-
-		// this.ui.addComponent(
-				new ButtonComponent(40, 50, 10, "AHOJ!", () -> System.out.println("clicked"));
-		// );
+		this.ui.addComponent(new ProgressBarComponent(Color.ORANGE, 0.5f, -800, -50, 1600, 100));
+		 /*this.ui.addComponent(
+				new ButtonComponent(40, 50, 10, "AHOJ!", () -> System.out.println("clicked"))
+		 );*/
 
 		/*Entity entity = new TestEntity();
 		this.scene.add(entity);
@@ -57,12 +57,12 @@ public class PyrobiteMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if(!AssetLoader.getInstance().update()){
-			new ProgressBarComponent(Color.BLUE, AssetLoader.getInstance().progress(),
-					Gdx.graphics.getWidth() /2f - 160 /2f,
-					Gdx.graphics.getHeight() /2f - 5,
-					160,
-					10).render(null, this.ui.shapeRenderer, this.ui.getUICamera());
 			this.ui.render();
+			new ProgressBarComponent(Color.BLUE, AssetLoader.getInstance().progress(),
+					-800,
+					-50,
+					1600,
+					100).render(null, this.ui.shapeRenderer, this.ui.getUICamera());
 			return;
 		}
 

@@ -15,11 +15,11 @@ import com.github.industrialcraft.pyrobite.AssetLoader;
 public class ButtonComponent extends UIComponent {
 
     private static final AssetLoader.Asset<Texture> startingTexture =
-            AssetLoader.getInstance().getTexture("./button_start.png");
+            AssetLoader.getInstance().getTexture("button_start.png");
     private static final AssetLoader.Asset<Texture> centerTexture =
-            AssetLoader.getInstance().getTexture("./button_middle.png");
+            AssetLoader.getInstance().getTexture("button_middle.png");
     private static final AssetLoader.Asset<Texture> endingTexture =
-            AssetLoader.getInstance().getTexture("./button_end.png");
+            AssetLoader.getInstance().getTexture("button_end.png");
 
     private static final BitmapFont font = new BitmapFont();
     private static final GlyphLayout layout = new GlyphLayout(font, "");
