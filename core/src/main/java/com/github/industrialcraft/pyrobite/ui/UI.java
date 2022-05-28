@@ -26,7 +26,7 @@ public class UI {
     }
 
     public void render() {
-        //spriteBatch.setTransformMatrix(uiCamera.view);
+        spriteBatch.setTransformMatrix(uiCamera.view);
         spriteBatch.setProjectionMatrix(uiCamera.combined);
         shapeRenderer.setTransformMatrix(uiCamera.view);
         shapeRenderer.setProjectionMatrix(uiCamera.combined);
