@@ -96,4 +96,8 @@ public class TerminalComponent extends UIComponent {
         if (content.length() >= 1)
             content = content.substring(0, content.length()-1);
     }
+
+    public void clear() {
+        messages.clear();
+    }
 }

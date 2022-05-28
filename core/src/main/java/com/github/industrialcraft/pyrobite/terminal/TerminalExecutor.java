@@ -2,6 +2,7 @@ package com.github.industrialcraft.pyrobite.terminal;
 
 import com.badlogic.gdx.Gdx;
 import com.github.industrialcraft.pyrobite.PyrobiteMain;
+import com.github.industrialcraft.pyrobite.entity.Entity;
 import com.github.industrialcraft.pyrobite.scene.Scene;
 import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
 import com.google.gson.JsonObject;
@@ -10,18 +11,23 @@ import com.google.gson.JsonParser;
 public class TerminalExecutor {
 
     public enum ConsoleCommands {
-        HELP("help", 0),
-        SAVE("save", 1),
-        LOAD("load", 1),
-        EXIT("exit", 0),
-        FPS ("fps", 0);
+        HELP("help", 0, "HelpMenu"),
+        SAVE("save", 1, "SaveMap"),
+        LOAD("load", 1, "LoadMap"),
+        EXIT("exit", 0, "ExitEngine"),
+        CDET("cdet", 0, "CameraDetails"),
+        CLEAR("clear", 0, "ClearTerminal"),
+        SDET("sdet", 0, "SceneDetails"),
+        FPS ("fps", 0,"FrameRateInfo");
 
         private final String command;
         private final int args;
+        private final String longerName;
 
-        ConsoleCommands(String cmd, int args) {
+        ConsoleCommands(String cmd, int args, String longerName) {
             this.command = cmd;
             this.args = args;
+            this.longerName = longerName;
         }
 
     }
@@ -43,7 +49,13 @@ public class TerminalExecutor {
                         }
 
                         args[index] = argument;
+
                     }
+
+                    for (String el : args)
+                        if (el == null)
+                            throw new IllegalStateException("Argument was null.");
+
 
                     executeCommand(c, command, args);
                     break;
@@ -63,7 +75,10 @@ public class TerminalExecutor {
 
         switch (command) {
             case HELP: {
-                c.shiftString("HELP: fasfasfs");
+                c.shiftString("HELP: Help menu");
+                for (ConsoleCommands command_1 : ConsoleCommands.values()) {
+                    c.shiftString("HELP: " + command_1.command + ": args[" + command_1.args + "] " + command_1.longerName);
+                }
                 break;
             }
 
@@ -82,6 +97,31 @@ public class TerminalExecutor {
             case EXIT: {
                 c.shiftString("EXIT: Hard engine termination");
                 Gdx.app.exit();
+            }
+
+            case CLEAR: {
+                c.clear();
+                break;
+            }
+
+            case CDET: {
+                c.shiftString("CDET: CameraDetails:");
+                c.shiftString("CDET:   Width: " + "ERROR");
+                c.shiftString("CDET:   Height: " + "ERROR");
+                c.shiftString("CDET:   PosX: " + "ERROR");
+                c.shiftString("CDET:   PosY: " + "ERROR");
+                break;
+            }
+
+            case SDET: {
+                c.shiftString("SDET: SceneDetails");
+                c.shiftString("SDET:   EntityCount: " + PyrobiteMain.getScene().getEntities().size());
+
+                for (Entity entity : PyrobiteMain.getScene().getEntities()) {
+                    c.shiftString("SDET:      EntityEntry: " + entity.toJson());
+                }
+
+                break;
             }
 
             default:

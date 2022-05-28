@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.github.industrialcraft.pyrobite.entity.Entity;
 import com.github.industrialcraft.pyrobite.input.InputManager;
 import com.github.industrialcraft.pyrobite.scene.Scene;
 import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
@@ -26,6 +27,10 @@ public class PyrobiteMain extends ApplicationAdapter {
 		scene = scene1;
 	}
 
+	public static Scene getScene() {
+		return scene;
+	}
+
 	@Override
 	public void create() {
 		Gdx.input.setInputProcessor(new InputManager());
@@ -35,7 +40,7 @@ public class PyrobiteMain extends ApplicationAdapter {
 
 		//this.scene = new Scene();
 
-		scene = SceneSaverLoader.load(new JsonParser().parse("{\"entities\":[{\"health\":100.0,\"type\":\"TestEntity\",\"tasks\":[{\"type\":\"TestTaskData\",\"ticks\":25}]}]}").getAsJsonObject());
+		scene = SceneSaverLoader.load(new JsonParser().parse("{\"entities\": []}").getAsJsonObject());
 		this.scheduler = new Scheduler();
 		this.ui = new UI();
 
@@ -67,7 +72,7 @@ public class PyrobiteMain extends ApplicationAdapter {
 		}
 
 		this.scheduler.tick();
-		this.scene.onTick();
+		scene.onTick();
 		this.ui.render();
 	}
 
