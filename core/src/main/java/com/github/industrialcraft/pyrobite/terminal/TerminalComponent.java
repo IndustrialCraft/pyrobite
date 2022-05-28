@@ -1,6 +1,8 @@
 package com.github.industrialcraft.pyrobite.terminal;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -29,7 +31,7 @@ public class TerminalComponent extends UIComponent {
         messages = new ArrayList<>();
         executor = new TerminalExecutor();
         input = new TerminalInput(this);
-        font = new BitmapFont();
+        font = new BitmapFont(Gdx.files.internal("terminal/terminal_font.fnt"));
 
         messages.add("|Pyrobite development console.    ");
         messages.add("|IndustrialCraft Studios (C) 2022 ");
@@ -44,6 +46,8 @@ public class TerminalComponent extends UIComponent {
 
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Camera camera) {
+        font.setColor(Color.WHITE);
+
         if (input.isBackspaceHeldDown)
             backspaceTicks ++;
         else
@@ -81,7 +85,7 @@ public class TerminalComponent extends UIComponent {
     }
 
     public void submit() {
-        messages.add("*" + content);
+        messages.add("/ " + content);
         executor.execute(this, content);
         content = "";
     }

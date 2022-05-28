@@ -1,0 +1,14 @@
+{
+  "entities": [
+    {
+      "health": 100.0,
+      "type": "TestEntity",
+      "tasks": [
+        {
+          "type": "TestTaskData",
+          "ticks":25
+        }
+      ]
+    }
+  ]
+}

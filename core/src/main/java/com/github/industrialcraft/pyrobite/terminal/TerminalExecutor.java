@@ -1,11 +1,20 @@
 package com.github.industrialcraft.pyrobite.terminal;
 
+import com.badlogic.gdx.Gdx;
+import com.github.industrialcraft.pyrobite.PyrobiteMain;
+import com.github.industrialcraft.pyrobite.scene.Scene;
+import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class TerminalExecutor {
 
     public enum ConsoleCommands {
         HELP("help", 0),
         SAVE("save", 1),
-        LOAD("load", 2);
+        LOAD("load", 1),
+        EXIT("exit", 0),
+        FPS ("fps", 0);
 
         private final String command;
         private final int args;
@@ -43,8 +52,10 @@ public class TerminalExecutor {
         }
         catch (Exception e) {
             c.shiftString("Command execution failed ...");
-            c.shiftString("Please use `help`");
+            c.shiftString(e.getMessage());
+            c.shiftString("-----");
             e.printStackTrace();
+
         }
     }
 
@@ -58,8 +69,23 @@ public class TerminalExecutor {
 
             case LOAD: {
                 c.shiftString("LOAD: Loading map: " + args[0]);
+                PyrobiteMain.setScene(SceneSaverLoader.load(JsonParser.parseString(Gdx.files.internal(args[0]).readString()).getAsJsonObject()));
+                c.shiftString("LOAD: Loading passed.");
                 break;
             }
+
+            case FPS: {
+                c.shiftString("FPS: Your frame-rate is: " + Gdx.graphics.getFramesPerSecond());
+                break;
+            }
+
+            case EXIT: {
+                c.shiftString("EXIT: Hard engine termination");
+                Gdx.app.exit();
+            }
+
+            default:
+                break;
         }
     }
 

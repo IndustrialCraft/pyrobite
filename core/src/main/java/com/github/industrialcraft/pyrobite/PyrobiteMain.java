@@ -18,9 +18,13 @@ import com.google.gson.JsonParser;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class PyrobiteMain extends ApplicationAdapter {
 
-	private Scene scene;
+	private static Scene scene;
 	private Scheduler scheduler;
 	private UI ui;
+
+	public static void setScene(Scene scene1) {
+		scene = scene1;
+	}
 
 	@Override
 	public void create() {
@@ -30,7 +34,8 @@ public class PyrobiteMain extends ApplicationAdapter {
 		new TestTaskData();
 
 		//this.scene = new Scene();
-		this.scene = SceneSaverLoader.load(new JsonParser().parse("{\"entities\":[{\"health\":100.0,\"type\":\"TestEntity\",\"tasks\":[{\"type\":\"TestTaskData\",\"ticks\":25}]}]}").getAsJsonObject());
+
+		scene = SceneSaverLoader.load(new JsonParser().parse("{\"entities\":[{\"health\":100.0,\"type\":\"TestEntity\",\"tasks\":[{\"type\":\"TestTaskData\",\"ticks\":25}]}]}").getAsJsonObject());
 		this.scheduler = new Scheduler();
 		this.ui = new UI();
 
