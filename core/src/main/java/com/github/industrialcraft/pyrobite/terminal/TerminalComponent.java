@@ -30,6 +30,7 @@ public class TerminalComponent extends UIComponent {
         executor = new TerminalExecutor();
         input = new TerminalInput(this);
         font = new BitmapFont();
+        font.getData().setScale(4);
 
         messages.add("|Pyrobite development console.    ");
         messages.add("|IndustrialCraft Studios (C) 2022 ");
@@ -64,15 +65,15 @@ public class TerminalComponent extends UIComponent {
             String message = messages.get(messages.size()-1 - i);
 
             if (index > 40) {
-                font.draw(spriteBatch, "...", 40, 40 + index * font.getLineHeight());
+                font.draw(spriteBatch, "...", -980, -980 + index * font.getLineHeight());
                 break;
             }
 
-            font.draw(spriteBatch, message, 40, 40 + index * font.getLineHeight());
+            font.draw(spriteBatch, message, -980, -980 + index * font.getLineHeight());
             index ++;
         }
 
-        font.draw(spriteBatch, "pyrobite_Engine: / " + content, 40, 40);
+        font.draw(spriteBatch, "pyrobite_Engine: / " + content, -980, -900);
 
     }
 

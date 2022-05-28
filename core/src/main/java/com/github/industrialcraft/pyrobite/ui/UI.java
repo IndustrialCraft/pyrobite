@@ -18,7 +18,7 @@ public class UI {
         this.spriteBatch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.shapeRenderer.setAutoShapeType(true);
-        this.uiCamera = new OrthographicCamera(200, 200);
+        this.uiCamera = new OrthographicCamera(2000, 2000);
     }
 
     public void addComponent(UIComponent component){
@@ -26,9 +26,9 @@ public class UI {
     }
 
     public void render() {
-        /// spriteBatch.setTransformMatrix(uiCamera.view);
+        //spriteBatch.setTransformMatrix(uiCamera.view);
         spriteBatch.setProjectionMatrix(uiCamera.combined);
-        /// shapeRenderer.setTransformMatrix(uiCamera.view);
+        shapeRenderer.setTransformMatrix(uiCamera.view);
         shapeRenderer.setProjectionMatrix(uiCamera.combined);
 
         for(UIComponent component : this.components){
@@ -42,6 +42,8 @@ public class UI {
     }
 
     public void resize(float w, float h) {
-        uiCamera.setToOrtho(false, w, h);
+        //uiCamera = new OrthographicCamera(2000, 2000);
+        //uiCamera.setToOrtho(false, 200, 200);
+        //uiCamera.update();
     }
 }
