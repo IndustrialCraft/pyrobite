@@ -2,6 +2,10 @@
 .gradle
 gradle-app.setting
 build/
+.gradle/
+core/build/
+lwjgl3/build/
+html/build/
 
 ## Java:
 *.class
