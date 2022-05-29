@@ -29,32 +29,24 @@ public class TerminalExecutor {
     }
 
     public enum ConsoleCommands {
-        HELP("help", 0, "HelpMenu"),
-        SAVE("save", 1, "SaveMap"),
-        LOAD("load", 1, "LoadMap"),
-        EXIT("exit", 0, "ExitEngine"),
-        CDET("cdet", 0, "CameraDetails"),
-        CLEAR("clear", 0, "ClearTerminal"),
-        SDET("sdet", 0, "SceneDetails"),
-        FPS ("fps", 0,"FrameRateInfo");
+        HELP("help", "Shows command help menu"),
+        SAVE("save", "Saves map to json file"),
+        LOAD("load", "Load map from json file"),
+        EXIT("exit", "Closes game"),
+        CLEAR("clear", "Clears terminal"),
+        SDET("sdet", "Prints scene details"),
+        FPS ("fps", "Show frames per second");
 
-        private final String command;
-        private final int args;
-        private final String longerName;
-
-        ConsoleCommands(String cmd, int args, String longerName) {
+        public final String command;
+        public final String desc;
+        ConsoleCommands(String cmd, String desc) {
             this.command = cmd;
-            this.args = args;
-            this.longerName = longerName;
-
+            this.desc = desc;
         }
-
     }
 
     private CommandDispatcher<CommandSourceData> dispatcher;
-
     public TerminalExecutor() {
-
         this.dispatcher = new CommandDispatcher<>();
 
         /*
@@ -109,9 +101,8 @@ public class TerminalExecutor {
             TODO: Update
          */
         this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.HELP.command).executes(context -> {
-            context.getSource().terminal.shiftString("HELP: Help menu");
             for (ConsoleCommands command_1 : ConsoleCommands.values()) {
-                context.getSource().terminal.shiftString("HELP: " + command_1.command + ": args[" + command_1.args + "] " + command_1.longerName);
+                context.getSource().terminal.shiftString("HELP: " + command_1.command + " - " + command_1.desc);
             }
             return 1;
         }));

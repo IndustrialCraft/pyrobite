@@ -70,7 +70,7 @@ public class TerminalComponent extends UIComponent {
             String message = messages.get(messages.size()-1 - i);
 
             if (index > 40) {
-                font.draw(spriteBatch, "...", -980, -980 + index * font.getLineHeight());
+                font.draw(spriteBatch, "...", -980, -980 + ((index+1) * font.getLineHeight()));
                 break;
             }
 
@@ -78,7 +78,7 @@ public class TerminalComponent extends UIComponent {
                 message = "(!!) Warning null-message NULL";
             }
 
-            font.draw(spriteBatch, message, -980, -980 + index * font.getLineHeight());
+            font.draw(spriteBatch, message, -980, -980 + ((index+1) * font.getLineHeight()));
             index ++;
         }
 
