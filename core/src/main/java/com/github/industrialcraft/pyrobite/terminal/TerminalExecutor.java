@@ -7,9 +7,26 @@ import com.github.industrialcraft.pyrobite.scene.Scene;
 import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
+import static com.mojang.brigadier.arguments.StringArgumentType.getString;
+import static com.mojang.brigadier.arguments.StringArgumentType.string;
+import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 
 public class TerminalExecutor {
-
+    public static class CommandSourceData{
+        public Scene scene;
+        public TerminalComponent terminal;
+        public CommandSourceData(Scene scene, TerminalComponent terminal) {
+            this.scene = scene;
+            this.terminal = terminal;
+        }
+    }
     public enum ConsoleCommands {
         HELP("help", 0, "HelpMenu"),
         SAVE("save", 1, "SaveMap"),
@@ -28,12 +45,53 @@ public class TerminalExecutor {
             this.command = cmd;
             this.args = args;
             this.longerName = longerName;
+
         }
 
     }
 
+    private CommandDispatcher<CommandSourceData> dispatcher;
+    public TerminalExecutor() {
+        this.dispatcher = new CommandDispatcher<>();
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal("fps").executes(context -> {
+            context.getSource().terminal.shiftString("FPS: Your frame-rate is: " + Gdx.graphics.getFramesPerSecond());
+            return 1;
+        }));
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal("exit").executes(context -> {
+            Gdx.app.exit();
+            return 1;
+        }));
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal("clear").executes(context -> {
+            context.getSource().terminal.clear();
+            return 1;
+        }));
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal("sdet").executes(context -> {
+            context.getSource().terminal.shiftString("SDET: SceneDetails");
+            context.getSource().terminal.shiftString("SDET:   EntityCount: " + PyrobiteMain.getScene().getEntities().size());
+
+            for (Entity entity : PyrobiteMain.getScene().getEntities()) {
+                context.getSource().terminal.shiftString("SDET:      EntityEntry: " + entity.toJson());
+            }
+            return 1;
+        }));
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal("load").then(RequiredArgumentBuilder.<CommandSourceData,String>argument("file", string()).executes(context -> {
+            context.getSource().terminal.shiftString("LOAD: Loading map: " + getString(context, "file"));
+            PyrobiteMain.setScene(SceneSaverLoader.load(JsonParser.parseString(Gdx.files.internal(getString(context, "file")).readString()).getAsJsonObject()));
+            context.getSource().terminal.shiftString("LOAD: Loading passed.");
+            return 1;
+        })));
+    }
+
     public void execute(TerminalComponent c, String terminalLine) {
+        final ParseResults<CommandSourceData> parse = dispatcher.parse(terminalLine, new CommandSourceData(PyrobiteMain.getScene(), c));
         try {
+            final int result = dispatcher.execute(parse);
+        } catch (CommandSyntaxException e) {
+            c.shiftString(e.getMessage());
+        } catch (RuntimeException e){
+            c.shiftString(e.getMessage());
+        }
+        /*try {
             String cmd = terminalLine.split(" ")[0];
 
             for (ConsoleCommands command : ConsoleCommands.values()) {
@@ -69,6 +127,7 @@ public class TerminalExecutor {
             e.printStackTrace();
 
         }
+        */
     }
 
     public void executeCommand(TerminalComponent c, ConsoleCommands command, String[] args) {

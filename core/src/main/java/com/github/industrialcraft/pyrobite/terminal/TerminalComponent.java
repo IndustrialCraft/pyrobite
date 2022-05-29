@@ -33,7 +33,7 @@ public class TerminalComponent extends UIComponent {
         input = new TerminalInput(this);
 
         font = new BitmapFont(Gdx.files.internal("terminal/terminal_font.fnt"));
-        font.getData().setScale(5);
+        font.getData().setScale(3);
 
         messages.add("|Pyrobite development console.    ");
         messages.add("|IndustrialCraft Studios (C) 2022 ");

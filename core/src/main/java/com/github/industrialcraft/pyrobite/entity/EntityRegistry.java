@@ -1,5 +1,6 @@
 package com.github.industrialcraft.pyrobite.entity;
 
+import com.github.industrialcraft.pyrobite.test.TestEntity;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 

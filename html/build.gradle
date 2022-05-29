@@ -7,6 +7,11 @@ buildscript {
         classpath "org.gretty:gretty:3.0.7"
     }
 }
+repositories {
+    maven {
+        url "https://libraries.minecraft.net"
+    }
+}
 apply plugin: "gwt"
 apply plugin: "war"
 apply plugin: "org.gretty"

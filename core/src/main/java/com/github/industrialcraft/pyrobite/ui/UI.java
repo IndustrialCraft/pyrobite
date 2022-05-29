@@ -42,8 +42,8 @@ public class UI {
     }
 
     public void resize(float w, float h) {
-        //uiCamera = new OrthographicCamera(w, h);
-        //uiCamera.setToOrtho(false, 200, 200);
+        //uiCamera = new OrthographicCamera(2000, 2000);
+        //uiCamera.setToOrtho(false, 2000, 2000);
         //uiCamera.update();
     }
 }

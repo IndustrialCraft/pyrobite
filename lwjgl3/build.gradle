@@ -5,6 +5,12 @@ mainClassName = 'com.github.industrialcraft.pyrobite.lwjgl3.Lwjgl3Launcher'
 eclipse.project.name = appName + '-lwjgl3'
 sourceCompatibility = 1.8
 
+repositories {
+	maven {
+		url "https://libraries.minecraft.net"
+	}
+}
+
 dependencies {
 	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"

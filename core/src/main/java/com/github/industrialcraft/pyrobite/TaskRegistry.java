@@ -1,5 +1,6 @@
 package com.github.industrialcraft.pyrobite;
 
+import com.github.industrialcraft.pyrobite.test.TestTaskData;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
