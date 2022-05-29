@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.input.InputManager;
 import com.github.industrialcraft.pyrobite.ui.UIComponent;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TerminalComponent extends UIComponent {
 
@@ -21,12 +23,15 @@ public class TerminalComponent extends UIComponent {
     private final TerminalExecutor executor;
     private final TerminalInput input;
     private final BitmapFont font;
+    private boolean active;
+    private List<String> suggestions;
 
 
     public TerminalComponent() {
         super();
+        this.active = false;
 
-        content = "";
+
 
         messages = new ArrayList<>();
         executor = new TerminalExecutor();
@@ -35,19 +40,38 @@ public class TerminalComponent extends UIComponent {
         font = new BitmapFont(Gdx.files.internal("terminal/terminal_font.fnt"));
         font.getData().setScale(3);
 
+        content = "";
+        this.suggestions = new ArrayList<>();
+
         messages.add("|Pyrobite development console.    ");
         messages.add("|IndustrialCraft Studios (C) 2022 ");
         messages.add("");
 
         InputManager.addInput(input);
     }
-
+    public void updateSuggestions(){
+        if(content.isEmpty()){
+            this.suggestions.clear();
+            return;
+        }
+        this.suggestions = executor.showAutocomplete(this, content);
+        System.out.println(suggestions);
+    }
     public void charPressed(char character) {
+        if(character=='`'){
+            active=!active;
+            return;
+        }
+        if(!active)
+            return;
         content = (content + character).replaceAll("\\p{C}", "");
+        updateSuggestions();
     }
 
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Camera camera) {
+        if(!active)
+            return;
         font.setColor(Color.WHITE);
 
         if (input.isBackspaceHeldDown)
@@ -94,11 +118,13 @@ public class TerminalComponent extends UIComponent {
         messages.add("/ " + content);
         executor.execute(this, content);
         content = "";
+        updateSuggestions();
     }
 
     public void backspace() {
         if (content.length() >= 1)
             content = content.substring(0, content.length()-1);
+        updateSuggestions();
     }
 
     public void clear() {

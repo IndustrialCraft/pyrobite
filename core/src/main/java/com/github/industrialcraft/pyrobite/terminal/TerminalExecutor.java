@@ -12,9 +12,19 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.Suggestion;
+import com.mojang.brigadier.suggestion.Suggestions;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
+import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 
 public class TerminalExecutor {
 
@@ -100,7 +110,23 @@ public class TerminalExecutor {
             Help command,
             TODO: Update
          */
-        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.HELP.command).executes(context -> {
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.HELP.command).then(RequiredArgumentBuilder.<CommandSourceData,String>argument("command",string()).executes(context -> {
+            for (ConsoleCommands command_1 : ConsoleCommands.values()) {
+                if(command_1.command.equals(getString(context, "command"))) {
+                    context.getSource().terminal.shiftString("HELP: " + command_1.command + " - " + command_1.desc);
+                    ArrayList<String> usages = new ArrayList<>();
+                    dispatcher.getSmartUsage(dispatcher.getRoot(), context.getSource()).forEach((commandSourceDataCommandNode, s) -> {
+                        if(commandSourceDataCommandNode.getName().equals(command_1.command))
+                            usages.add(s);
+                    });
+                    for(String usage : usages){
+                        context.getSource().terminal.shiftString("USAGE: " + usage);
+                    }
+                    break;
+                }
+            }
+            return 1;
+        })).executes(context -> {
             for (ConsoleCommands command_1 : ConsoleCommands.values()) {
                 context.getSource().terminal.shiftString("HELP: " + command_1.command + " - " + command_1.desc);
             }
@@ -108,7 +134,12 @@ public class TerminalExecutor {
         }));
 
     }
+    public List<String> showAutocomplete(TerminalComponent c, String input){
+        final ParseResults<CommandSourceData> parse = dispatcher.parse(input, new CommandSourceData(Scene.getInstance(), c));
 
+        CompletableFuture<Suggestions> suggestions = dispatcher.getCompletionSuggestions(parse);
+        return suggestions.join().getList().stream().map(suggestion -> suggestion.getText()).collect(Collectors.toList());
+    }
     public void execute(TerminalComponent c, String terminalLine) {
         final ParseResults<CommandSourceData> parse = dispatcher.parse(terminalLine, new CommandSourceData(Scene.getInstance(), c));
 
@@ -119,6 +150,7 @@ public class TerminalExecutor {
                 c.shiftString("Command execution failed, no further information! " + e);
                 return;
             }
+            System.err.println(e.getMessage());
             c.shiftString(e.getMessage());
         }
     }
