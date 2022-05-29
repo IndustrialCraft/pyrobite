@@ -74,6 +74,10 @@ public class TerminalComponent extends UIComponent {
                 break;
             }
 
+            if (message == null) {
+                message = "(!!) Warning null-message NULL";
+            }
+
             font.draw(spriteBatch, message, -980, -980 + index * font.getLineHeight());
             index ++;
         }

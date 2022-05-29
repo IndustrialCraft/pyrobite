@@ -1,0 +1,94 @@
+try {
+            String cmd = terminalLine.split(" ")[0];
+
+            for (ConsoleCommands command : ConsoleCommands.values()) {
+                if (command.command.equals(cmd)) {
+                    String[] args = new String[command.args];
+
+                    int index = -2;
+                    for (String argument : terminalLine.split(" ")) {
+                        index ++;
+
+                        if (index == -1) {
+                            continue;
+                        }
+
+                        args[index] = argument;
+
+                    }
+
+                    for (String el : args)
+                        if (el == null)
+                            throw new IllegalStateException("Argument was null.");
+
+
+                    executeCommand(c, command, args);
+                    break;
+                }
+            }
+        }
+        catch (Exception e) {
+            c.shiftString("Command execution failed ...");
+            c.shiftString(e.getMessage());
+            c.shiftString("-----");
+            e.printStackTrace();
+
+        }
+
+public void executeCommand(TerminalComponent c, ConsoleCommands command, String[] args) {
+
+        switch (command) {
+            case HELP: {
+                c.shiftString("HELP: Help menu");
+                for (ConsoleCommands command_1 : ConsoleCommands.values()) {
+                    c.shiftString("HELP: " + command_1.command + ": args[" + command_1.args + "] " + command_1.longerName);
+                }
+                break;
+            }
+
+            case LOAD: {
+                c.shiftString("LOAD: Loading map: " + args[0]);
+                PyrobiteMain.setScene(SceneSaverLoader.load(JsonParser.parseString(Gdx.files.internal(args[0]).readString()).getAsJsonObject()));
+                c.shiftString("LOAD: Loading passed.");
+                break;
+            }
+
+            case FPS: {
+                c.shiftString("FPS: Your frame-rate is: " + Gdx.graphics.getFramesPerSecond());
+                break;
+            }
+
+            case EXIT: {
+                c.shiftString("EXIT: Hard engine termination");
+                Gdx.app.exit();
+            }
+
+            case CLEAR: {
+                c.clear();
+                break;
+            }
+
+            case CDET: {
+                c.shiftString("CDET: CameraDetails:");
+                c.shiftString("CDET:   Width: " + "ERROR");
+                c.shiftString("CDET:   Height: " + "ERROR");
+                c.shiftString("CDET:   PosX: " + "ERROR");
+                c.shiftString("CDET:   PosY: " + "ERROR");
+                break;
+            }
+
+            case SDET: {
+                c.shiftString("SDET: SceneDetails");
+                c.shiftString("SDET:   EntityCount: " + PyrobiteMain.getScene().getEntities().size());
+
+                for (Entity entity : PyrobiteMain.getScene().getEntities()) {
+                    c.shiftString("SDET:      EntityEntry: " + entity.toJson());
+                }
+
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
