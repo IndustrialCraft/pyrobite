@@ -8,8 +8,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class SceneSaverLoader {
-    public static Scene load(JsonObject json){
-        Scene scene = new Scene();
+    public static void load(JsonObject json){
+        Scene scene = Scene.getInstance();
+        scene.reset();
         JsonArray entitiesJson = json.getAsJsonArray("entities");
         for(JsonElement entityJsonElement : entitiesJson){
             JsonObject entityJson = entityJsonElement.getAsJsonObject();
@@ -33,11 +34,11 @@ public class SceneSaverLoader {
                 scene.getScheduler().addTask(entity, taskData, ticks);
             }
         }
-        return scene;
     }
-    public static JsonObject save(Scene scene){
+    public static JsonObject save(){
         JsonObject sceneJson = new JsonObject();
         JsonArray entities = new JsonArray();
+        Scene scene = Scene.getInstance();
         for(Entity entity : scene.getEntities()){
             JsonObject entityJson = entity.toJson();
             entityJson.addProperty("type", EntityRegistry.getInstance().getName(entity));

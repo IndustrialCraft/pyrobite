@@ -19,17 +19,8 @@ import com.google.gson.JsonParser;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class PyrobiteMain extends ApplicationAdapter {
-	private static Scene scene;
 	private Scheduler scheduler;
 	private UI ui;
-
-	public static void setScene(Scene scene1) {
-		scene = scene1;
-	}
-
-	public static Scene getScene() {
-		return scene;
-	}
 
 	@Override
 	public void create() {
@@ -40,10 +31,10 @@ public class PyrobiteMain extends ApplicationAdapter {
 
 		//this.scene = new Scene();
 
-		scene = SceneSaverLoader.load(new JsonParser().parse("{\"entities\": []}").getAsJsonObject());
+		SceneSaverLoader.load(new JsonParser().parse("{\"entities\": []}").getAsJsonObject());
 		Entity entity = new TestEntity(new Position(-100, -100));
-		scene.add(entity);
-		scene.setCameraEntity(entity);
+		Scene.getInstance().add(entity);
+		Scene.getInstance().setCameraEntity(entity);
 		this.scheduler = new Scheduler();
 		this.ui = new UI();
 
@@ -75,7 +66,7 @@ public class PyrobiteMain extends ApplicationAdapter {
 		}
 
 		this.scheduler.tick();
-		scene.onTick();
+		Scene.getInstance().onTick();
 		this.ui.render();
 	}
 
@@ -87,6 +78,6 @@ public class PyrobiteMain extends ApplicationAdapter {
 
 	@Override
 	public void dispose() {
-		scene.dispose();
+		Scene.getInstance().dispose();
 	}
 }

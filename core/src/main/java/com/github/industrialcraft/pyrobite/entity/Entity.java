@@ -36,6 +36,9 @@ public abstract class Entity {
         return health;
     }
 
+    public void kill(){
+        this.health = 0;
+    }
     public boolean isDead(){
         return health <= 0;
     }

@@ -12,16 +12,26 @@ import java.util.Collections;
 import java.util.List;
 
 public class Scene {
+    private static Scene INSTANCE = new Scene();
+    public static Scene getInstance() {
+        return INSTANCE;
+    }
+
     private ArrayList<Entity> entities;
     private Scheduler scheduler;
     private Camera camera;
     private SpriteBatch spriteBatch;
     private Entity cameraEntity;
-    public Scene() {
+    private Scene() {
         this.entities = new ArrayList<>();
         this.scheduler = new Scheduler();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.spriteBatch = new SpriteBatch();
+    }
+    public void reset(){
+        this.entities.forEach(entity -> entity.kill());
+        this.entities.clear();
+        this.scheduler.reset();
     }
     public void add(Entity entity){
         this.entities.add(entity);

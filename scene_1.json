@@ -3,6 +3,8 @@
     {
       "health": 100.0,
       "type": "TestEntity",
+      "positionX":5,
+      "positionY":10,
       "tasks": [
         {
           "type": "TestTaskData",

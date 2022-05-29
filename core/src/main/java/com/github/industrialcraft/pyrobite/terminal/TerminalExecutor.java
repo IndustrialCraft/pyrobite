@@ -78,9 +78,9 @@ public class TerminalExecutor {
          */
         this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.SDET.command).executes(context -> {
             context.getSource().terminal.shiftString("SDET: SceneDetails");
-            context.getSource().terminal.shiftString("SDET:   EntityCount: " + PyrobiteMain.getScene().getEntities().size());
+            context.getSource().terminal.shiftString("SDET:   EntityCount: " + Scene.getInstance().getEntities().size());
 
-            for (Entity entity : PyrobiteMain.getScene().getEntities()) {
+            for (Entity entity : Scene.getInstance().getEntities()) {
                 context.getSource().terminal.shiftString("SDET:      EntityEntry: " + entity.toJson());
             }
             return 1;
@@ -91,7 +91,7 @@ public class TerminalExecutor {
          */
         this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.LOAD.command).then(RequiredArgumentBuilder.<CommandSourceData,String>argument("file", string()).executes(context -> {
             context.getSource().terminal.shiftString("LOAD: Loading map: " + getString(context, "file"));
-            PyrobiteMain.setScene(SceneSaverLoader.load(JsonParser.parseString(Gdx.files.internal(getString(context, "file")).readString()).getAsJsonObject()));
+            SceneSaverLoader.load(JsonParser.parseString(Gdx.files.internal(getString(context, "file")).readString()).getAsJsonObject());
             context.getSource().terminal.shiftString("LOAD: Loading passed.");
             return 1;
         })));
@@ -110,7 +110,7 @@ public class TerminalExecutor {
     }
 
     public void execute(TerminalComponent c, String terminalLine) {
-        final ParseResults<CommandSourceData> parse = dispatcher.parse(terminalLine, new CommandSourceData(PyrobiteMain.getScene(), c));
+        final ParseResults<CommandSourceData> parse = dispatcher.parse(terminalLine, new CommandSourceData(Scene.getInstance(), c));
 
         try {
             final int result = dispatcher.execute(parse);
