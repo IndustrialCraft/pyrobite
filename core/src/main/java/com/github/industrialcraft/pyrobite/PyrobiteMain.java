@@ -52,17 +52,6 @@ public class PyrobiteMain extends ApplicationAdapter {
 
 		this.ui.addComponent(window);
 
-		//this.ui.addComponent(new ProgressBarComponent(Color.ORANGE, 0.5f, -800, -50, 1600, 100));
-
-		 /*this.ui.addComponent(
-				new ButtonComponent(40, 50, 10, "AHOJ!", () -> System.out.println("clicked"))
-		 );*/
-
-		/*Entity entity = new TestEntity();
-		this.scene.add(entity);
-		this.scene.getScheduler().addTask(entity, new TestTaskData(), 25);
-		System.out.println(SceneSaverLoader.save(scene));*/
-
 	}
 
 	@Override

@@ -29,11 +29,19 @@ public class WinProgressbar extends WinUIComponent {
 
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Camera camera) {
+
+        percentage ++;
+        if (percentage > 100) {
+            percentage = 0;
+        }
+
         spriteBatch.draw(middle.get(), getWindowUpdatedPosX() + 30, getWindowUpdatedPosY(), getWidth() - 20, getHeight());
         spriteBatch.draw(start.get(), getWindowUpdatedPosX(), getWindowUpdatedPosY(), 30, getHeight());
         spriteBatch.draw(end.get(), getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 30, getHeight());
 
-        spriteBatch.draw(progress.get(), getWindowUpdatedPosX() + 30, getWindowUpdatedPosY() +20, percentage/100f * getWidth() - 35, getHeight() - 40);
+        if (!(percentage < 5)) {
+            spriteBatch.draw(progress.get(), getWindowUpdatedPosX() + 30, getWindowUpdatedPosY() +20, percentage/100f * getWidth() - 35, getHeight() - 40);
+        }
     }
 
     @Override
