@@ -1,4 +1,4 @@
-package com.github.industrialcraft.pyrobite.ui;
+package com.github.industrialcraft.pyrobite.terminal.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

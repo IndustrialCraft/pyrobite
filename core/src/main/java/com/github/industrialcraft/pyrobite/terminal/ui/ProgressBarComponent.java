@@ -1,10 +1,9 @@
-package com.github.industrialcraft.pyrobite.ui;
+package com.github.industrialcraft.pyrobite.terminal.ui;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import sun.security.provider.SHA;
 
 public class ProgressBarComponent extends UIComponent{
 

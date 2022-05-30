@@ -1,15 +1,17 @@
-package com.github.industrialcraft.pyrobite.ui;
+package com.github.industrialcraft.pyrobite.terminal.ui;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.github.industrialcraft.pyrobite.terminal.TerminalExecutor;
 
 import java.util.ArrayList;
 
 public class UI {
     private ArrayList<UIComponent> components;
-    private SpriteBatch spriteBatch;
+
+    public SpriteBatch spriteBatch;
     public ShapeRenderer shapeRenderer;
     private OrthographicCamera uiCamera;
 
@@ -26,6 +28,12 @@ public class UI {
     }
 
     public void render() {
+
+        if (TerminalExecutor.commandCamera != null) {
+            this.uiCamera = TerminalExecutor.commandCamera;
+            TerminalExecutor.commandCamera = null;
+        }
+
         spriteBatch.setTransformMatrix(uiCamera.view);
         spriteBatch.setProjectionMatrix(uiCamera.combined);
         shapeRenderer.setTransformMatrix(uiCamera.view);

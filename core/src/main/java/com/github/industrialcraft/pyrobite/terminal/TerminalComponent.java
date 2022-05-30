@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.input.InputManager;
-import com.github.industrialcraft.pyrobite.ui.UIComponent;
-import com.google.common.collect.Lists;
+import com.github.industrialcraft.pyrobite.terminal.ui.UIComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TerminalComponent extends UIComponent {
+
+    public static BitmapFont font;
 
     private String content;
     private int backspaceTicks;
@@ -22,7 +23,6 @@ public class TerminalComponent extends UIComponent {
     private final ArrayList<String> messages;
     private final TerminalExecutor executor;
     private final TerminalInput input;
-    private final BitmapFont font;
     private boolean active;
     private List<String> suggestions;
 

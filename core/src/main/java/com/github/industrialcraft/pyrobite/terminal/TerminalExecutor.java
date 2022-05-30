@@ -1,7 +1,7 @@
 package com.github.industrialcraft.pyrobite.terminal;
 
 import com.badlogic.gdx.Gdx;
-import com.github.industrialcraft.pyrobite.PyrobiteMain;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.github.industrialcraft.pyrobite.entity.Entity;
 import com.github.industrialcraft.pyrobite.scene.Scene;
 import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
@@ -12,21 +12,21 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static com.mojang.brigadier.arguments.FloatArgumentType.floatArg;
+import static com.mojang.brigadier.arguments.FloatArgumentType.getFloat;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
-import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 
 public class TerminalExecutor {
+
+    public static OrthographicCamera commandCamera;
 
     public static class CommandSourceData {
         public Scene scene;
@@ -45,6 +45,7 @@ public class TerminalExecutor {
         EXIT("exit", "Closes game"),
         CLEAR("clear", "Clears terminal"),
         SDET("sdet", "Prints scene details"),
+        NCAM("nuicam", "Creates new UI camera"),
         FPS ("fps", "Show frames per second");
 
         public final String command;
@@ -105,6 +106,31 @@ public class TerminalExecutor {
             context.getSource().terminal.shiftString("LOAD: Loading passed.");
             return 1;
         })));
+
+        /*
+            NewCam command
+         */
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.NCAM.command)
+                .then(RequiredArgumentBuilder.<CommandSourceData,Float>argument("width", floatArg())
+                .then(RequiredArgumentBuilder.<CommandSourceData,Float>argument("height", floatArg())
+                .then(RequiredArgumentBuilder.<CommandSourceData,Float>argument("x", floatArg())
+                .then(RequiredArgumentBuilder.<CommandSourceData,Float>argument("y", floatArg())
+                .executes(context -> {
+
+                    float width = getFloat(context,"width");
+                    float height = getFloat(context,"height");
+                    float x = getFloat(context, "x");
+                    float y= getFloat(context, "y");
+
+                    context.getSource().terminal.shiftString("NCAM: Creating new camera..");
+
+                    commandCamera = new OrthographicCamera(width, height);
+                    commandCamera.position.set(x, y, 0);
+
+
+                    context.getSource().terminal.shiftString("NCAM: New camera was assigned.");
+                    return 1;
+        }))))));
 
         /*
             Help command,
