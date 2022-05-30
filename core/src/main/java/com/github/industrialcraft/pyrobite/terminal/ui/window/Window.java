@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.AssetLoader;
-import com.github.industrialcraft.pyrobite.AssetManager;
+
 import com.github.industrialcraft.pyrobite.terminal.ui.window.components.WinLabel;
 
 import java.util.ArrayList;

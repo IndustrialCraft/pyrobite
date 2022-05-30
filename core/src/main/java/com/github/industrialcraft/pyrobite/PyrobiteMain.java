@@ -48,7 +48,7 @@ public class PyrobiteMain extends ApplicationAdapter {
 		this.ui.addComponent(new TerminalComponent());
 
 		window = new Window("Debug", -800, -50, 1000, 500);
-		window.add(new WinProgressbar(0,0, 400));
+		window.add(new WinProgressbar(0,0, 800));
 
 		this.ui.addComponent(window);
 
