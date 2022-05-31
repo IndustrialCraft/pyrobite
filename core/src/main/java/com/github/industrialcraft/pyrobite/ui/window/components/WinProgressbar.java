@@ -1,13 +1,11 @@
-package com.github.industrialcraft.pyrobite.terminal.ui.window.components;
+package com.github.industrialcraft.pyrobite.ui.window.components;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.AssetLoader;
-import com.github.industrialcraft.pyrobite.terminal.ui.window.WinUIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.WinUIComponent;
 
 public class WinProgressbar extends WinUIComponent {
 
@@ -24,7 +22,7 @@ public class WinProgressbar extends WinUIComponent {
             AssetLoader.getInstance().getTexture("window/progress.png");
 
     public WinProgressbar(float positionX, float positionY, float width) {
-        super(positionX, positionY, width, 100);
+        super(positionX, positionY, width, 30);
     }
 
     @Override
@@ -35,17 +33,15 @@ public class WinProgressbar extends WinUIComponent {
             percentage = 0;
         }
 
-        spriteBatch.draw(middle.get(), getWindowUpdatedPosX() + 30, getWindowUpdatedPosY(), getWidth() - 20, getHeight());
-        spriteBatch.draw(start.get(), getWindowUpdatedPosX(), getWindowUpdatedPosY(), 30, getHeight());
-        spriteBatch.draw(end.get(), getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 30, getHeight());
+        spriteBatch.draw(middle.get(), getWindowUpdatedPosX() + 10, getWindowUpdatedPosY(), getWidth() - 10, getHeight());
+        spriteBatch.draw(start.get(), getWindowUpdatedPosX(), getWindowUpdatedPosY(), 10, getHeight());
+        spriteBatch.draw(end.get(), getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 10, getHeight());
 
-        if (!(percentage < 5)) {
-            spriteBatch.draw(progress.get(), getWindowUpdatedPosX() + 30, getWindowUpdatedPosY() +20, percentage/100f * getWidth() - 35, getHeight() - 40);
-        }
+        spriteBatch.draw(progress.get(), getWindowUpdatedPosX() + 10, getWindowUpdatedPosY() + 5, (getWidth()-10)/100*percentage, 20);
     }
 
     @Override
-    public void clickedComponent(int y, int x) {
+    public void clickedComponent(int x, int y) {
 
     }
 

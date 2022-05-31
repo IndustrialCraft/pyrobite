@@ -1,9 +1,9 @@
-package com.github.industrialcraft.pyrobite.terminal.ui.window;
+package com.github.industrialcraft.pyrobite.ui.window;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.github.industrialcraft.pyrobite.terminal.ui.UIComponent;
+import com.github.industrialcraft.pyrobite.ui.UIComponent;
 
 public abstract class WinUIComponent extends UIComponent {
 
@@ -25,7 +25,7 @@ public abstract class WinUIComponent extends UIComponent {
     @Override
     public abstract void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Camera camera);
 
-    public abstract void clickedComponent(int y, int x);
+    public abstract void clickedComponent(int x, int y);
 
     public float getWidth() {
         return width;

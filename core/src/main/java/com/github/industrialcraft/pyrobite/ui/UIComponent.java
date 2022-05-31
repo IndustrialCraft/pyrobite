@@ -1,4 +1,4 @@
-package com.github.industrialcraft.pyrobite.terminal.ui;
+package com.github.industrialcraft.pyrobite.ui;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

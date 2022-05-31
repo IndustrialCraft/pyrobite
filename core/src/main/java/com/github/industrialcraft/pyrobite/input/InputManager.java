@@ -12,6 +12,10 @@ public class InputManager implements InputProcessor {
         inputs.add(processor);
     }
 
+    public static void removeInput(InputProcessor input) {
+        inputs.remove(input);
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         inputs.forEach((a) -> a.keyDown(keycode));
@@ -32,7 +36,12 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        inputs.forEach((a) -> a.touchDown(screenX, screenY, pointer, button));
+        try {
+            inputs.forEach((a) -> a.touchDown(screenX, screenY, pointer, button));
+        }
+        catch (Exception e) {
+
+        }
         return false;
     }
 

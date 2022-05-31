@@ -1,4 +1,4 @@
-package com.github.industrialcraft.pyrobite.terminal.ui.window.components;
+package com.github.industrialcraft.pyrobite.ui.window.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import com.github.industrialcraft.pyrobite.terminal.ui.window.WinUIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.WinUIComponent;
 
 public class WinLabel extends WinUIComponent {
 
@@ -17,7 +17,6 @@ public class WinLabel extends WinUIComponent {
         super(positionX, positionY, 0, 0);
 
         font = new BitmapFont(Gdx.files.internal("terminal/terminal_font.fnt"));
-        font.getData().setScale(3);
 
         this.content = content;
     }
@@ -41,7 +40,7 @@ public class WinLabel extends WinUIComponent {
     }
 
     @Override
-    public void clickedComponent(int y, int x) {
+    public void clickedComponent(int x, int y) {
 
     }
 

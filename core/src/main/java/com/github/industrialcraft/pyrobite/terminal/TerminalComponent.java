@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.input.InputManager;
-import com.github.industrialcraft.pyrobite.terminal.ui.UIComponent;
+import com.github.industrialcraft.pyrobite.ui.UIComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class TerminalComponent extends UIComponent {
         input = new TerminalInput(this);
 
         font = new BitmapFont(Gdx.files.internal("terminal/terminal_font.fnt"));
-        font.getData().setScale(3);
+        //font.getData().setScale(3);
 
         content = "";
         this.suggestions = new ArrayList<>();
@@ -94,7 +94,7 @@ public class TerminalComponent extends UIComponent {
             String message = messages.get(messages.size()-1 - i);
 
             if (index > 40) {
-                font.draw(spriteBatch, "...", -980, -980 + ((index+1) * font.getLineHeight()));
+                font.draw(spriteBatch, "...", 10, 30 + ((index+1) * font.getLineHeight()));
                 break;
             }
 
@@ -102,11 +102,11 @@ public class TerminalComponent extends UIComponent {
                 message = "(!!) Warning null-message NULL";
             }
 
-            font.draw(spriteBatch, message, -980, -980 + ((index+1) * font.getLineHeight()));
+            font.draw(spriteBatch, message, 10, 50 + ((index+1) * font.getLineHeight()));
             index ++;
         }
 
-        font.draw(spriteBatch, "pyrobite_Engine: / " + content, -980, -900);
+        font.draw(spriteBatch, "pyrobite_Engine: / " + content, 10, 50);
 
     }
 

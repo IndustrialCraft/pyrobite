@@ -2,21 +2,19 @@ package com.github.industrialcraft.pyrobite;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.github.industrialcraft.pyrobite.entity.Entity;
 import com.github.industrialcraft.pyrobite.input.InputManager;
 import com.github.industrialcraft.pyrobite.location.Position;
 import com.github.industrialcraft.pyrobite.scene.Scene;
 import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
-import com.github.industrialcraft.pyrobite.terminal.ui.window.components.WinLabel;
-import com.github.industrialcraft.pyrobite.terminal.ui.window.components.WinProgressbar;
+import com.github.industrialcraft.pyrobite.ui.window.components.WinButton;
+import com.github.industrialcraft.pyrobite.ui.window.components.WinLabel;
 import com.github.industrialcraft.pyrobite.test.TestEntity;
 import com.github.industrialcraft.pyrobite.test.TestTaskData;
-import com.github.industrialcraft.pyrobite.terminal.ui.ProgressBarComponent;
 import com.github.industrialcraft.pyrobite.terminal.TerminalComponent;
-import com.github.industrialcraft.pyrobite.terminal.ui.UI;
-import com.github.industrialcraft.pyrobite.terminal.ui.window.Window;
+import com.github.industrialcraft.pyrobite.ui.UI;
+import com.github.industrialcraft.pyrobite.ui.window.Window;
 import com.google.gson.JsonParser;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -45,13 +43,19 @@ public class PyrobiteMain extends ApplicationAdapter {
 
 		this.scheduler = new Scheduler();
 		this.ui = new UI();
-		this.ui.addComponent(new TerminalComponent());
 
-		window = new Window("Debug", -800, -50, 1000, 500);
-		window.add(new WinProgressbar(0,0, 800));
+		window = new Window("Debug", 10, 10, 400, 160);
+		window.add(new WinLabel("Welcome to pyrobite!", 10, 135));
+		window.add(new WinLabel("Press '`' on your keyboard.", 10, 110));
+		window.add(new WinButton("Dismiss",
+				window.getWidth() - 100,
+				10,
+				80,
+				() ->
+				{this.ui.removeComponent(window);}));
 
 		this.ui.addComponent(window);
-
+		this.ui.addComponent(new TerminalComponent());
 	}
 
 	@Override

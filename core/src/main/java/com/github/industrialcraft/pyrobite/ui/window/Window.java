@@ -1,12 +1,15 @@
-package com.github.industrialcraft.pyrobite.terminal.ui.window;
+package com.github.industrialcraft.pyrobite.ui.window;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.AssetLoader;
 
-import com.github.industrialcraft.pyrobite.terminal.ui.window.components.WinLabel;
+import com.github.industrialcraft.pyrobite.input.InputManager;
+import com.github.industrialcraft.pyrobite.ui.UIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.components.WinLabel;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,8 @@ public class Window extends WinUIComponent {
     private final ArrayList<WinUIComponent> components;
     private boolean isEmbedded;
     private final String name;
+
+    private WindowInput input;
 
     private static final AssetLoader.Asset<Texture> leftSide =
             AssetLoader.getInstance().getTexture("window/window_side_left.png");
@@ -35,6 +40,9 @@ public class Window extends WinUIComponent {
         this.components = new ArrayList<>();
         this.name = name;
 
+        this.input = new WindowInput(this);
+        InputManager.addInput(this.input);
+
         if (RENDER_WINDOW_NAMES)
             this.components.add(new WinLabel(name, 0, getHeight() - 80));
     }
@@ -50,21 +58,32 @@ public class Window extends WinUIComponent {
         float y = isEmbedded ? getWindowUpdatedPosY() : getPositionY();
 
         spriteBatch.draw(center.get(), x, y, getWidth(), getHeight());
-        spriteBatch.draw(leftSide.get(), x, y, 30, getHeight());
-        spriteBatch.draw(rightSide.get(), x + getWidth(), y, 30, getHeight());
-        spriteBatch.draw(bottom.get(), x + 15, y - 25, getWidth(), 50);
-        spriteBatch.draw(top.get(), x + 15, y - 25 + getHeight(), getWidth(), 50);
+        spriteBatch.draw(leftSide.get(), x - 5, y, 10, getHeight());
+        spriteBatch.draw(rightSide.get(), x + getWidth(), y, 10, getHeight());
+        spriteBatch.draw(bottom.get(), x, y - 5, getWidth() + 5, 10);
+        spriteBatch.draw(top.get(), x, y - 5 + getHeight(), getWidth() + 5, 10);
 
         for (WinUIComponent component : components) {
-            component.setWindowUpdatedPosX(x + component.getPositionX() + 50);
-            component.setWindowUpdatedPosY(y + component.getPositionY() + 50);
+            component.setWindowUpdatedPosX(x + component.getPositionX() + 4);
+            component.setWindowUpdatedPosY(y + component.getPositionY() + 4);
             component.render(spriteBatch, shapeRenderer, camera);
         }
     }
 
     @Override
-    public void clickedComponent(int y, int x) {
+    public void clickedComponent(int x, int y) {
+        float mx = x;
+        float my = Gdx.graphics.getHeight() - y;
 
+        for (WinUIComponent component : components) {
+            if (isInBoundingBox(component.getPositionX() + 10, component.getPositionY() + 12, component.getWidth(), component.getHeight(), mx, my)) {
+                component.clickedComponent(x, y);
+            }
+        }
+    }
+
+    private boolean isInBoundingBox(float x, float y, float width, float height, float mouseX, float mouseY) {
+        return (x < mouseX && mouseX < x + width) && (y < mouseY && mouseY < y + height);
     }
 
     public Window add(WinUIComponent component) {
@@ -78,5 +97,9 @@ public class Window extends WinUIComponent {
 
     public void clear() {
         components.clear();
+    }
+
+    public void prepareToRemove() {
+        InputManager.removeInput(this.input);
     }
 }
