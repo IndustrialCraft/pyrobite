@@ -94,7 +94,7 @@ public class Window extends WinUIComponent {
         }
 
         if (beingRemoved) {
-            removeIndex += getWidth() / 2f;
+            removeIndex += getWidth() / 3f;
             return;
         }
 
