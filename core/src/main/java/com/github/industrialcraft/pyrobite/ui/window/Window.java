@@ -17,11 +17,12 @@ public class Window extends WinUIComponent {
 
     public static boolean RENDER_WINDOW_NAMES = Boolean.FALSE;
 
+    private final WindowInput input;
+
     private final ArrayList<WinUIComponent> components;
     private boolean isEmbedded;
-    private final String name;
-
-    private WindowInput input;
+    private Runnable updateRunnable;
+    private boolean undecorated;
 
     private static final AssetLoader.Asset<Texture> leftSide =
             AssetLoader.getInstance().getTexture("window/window_side_left.png");
@@ -38,9 +39,9 @@ public class Window extends WinUIComponent {
         super(x, y, width, height);
 
         this.components = new ArrayList<>();
-        this.name = name;
-
         this.input = new WindowInput(this);
+        this.undecorated = false;
+
         InputManager.addInput(this.input);
 
         if (RENDER_WINDOW_NAMES)
@@ -52,22 +53,38 @@ public class Window extends WinUIComponent {
         return this;
     }
 
+    public Window setUpdater(Runnable runnable) {
+        this.updateRunnable = runnable;
+        return this;
+    }
+
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Camera camera) {
+
+        if (updateRunnable != null)
+            updateRunnable.run();
+
         float x = isEmbedded ? getWindowUpdatedPosX() : getPositionX();
         float y = isEmbedded ? getWindowUpdatedPosY() : getPositionY();
 
-        spriteBatch.draw(center.get(), x, y, getWidth(), getHeight());
-        spriteBatch.draw(leftSide.get(), x - 5, y, 10, getHeight());
-        spriteBatch.draw(rightSide.get(), x + getWidth(), y, 10, getHeight());
-        spriteBatch.draw(bottom.get(), x, y - 5, getWidth() + 5, 10);
-        spriteBatch.draw(top.get(), x, y - 5 + getHeight(), getWidth() + 5, 10);
+        if (!undecorated) {
+            spriteBatch.draw(center.get(), x, y, getWidth(), getHeight());
+            spriteBatch.draw(leftSide.get(), x - 5, y, 10, getHeight());
+            spriteBatch.draw(rightSide.get(), x + getWidth(), y, 10, getHeight());
+            spriteBatch.draw(bottom.get(), x, y - 5, getWidth() + 5, 10);
+            spriteBatch.draw(top.get(), x, y - 5 + getHeight(), getWidth() + 5, 10);
+        }
 
         for (WinUIComponent component : components) {
             component.setWindowUpdatedPosX(x + component.getPositionX() + 4);
             component.setWindowUpdatedPosY(y + component.getPositionY() + 4);
             component.render(spriteBatch, shapeRenderer, camera);
         }
+    }
+
+    public Window asUndecorated() {
+        this.undecorated = true;
+        return this;
     }
 
     @Override
