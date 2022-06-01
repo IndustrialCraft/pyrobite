@@ -30,9 +30,7 @@ public class TerminalComponent extends WinUIComponent {
 
     public TerminalComponent(float x, float y) {
         super(x, y, 0, 0);
-        this.active = false;
-
-
+        this.active = true;
 
         messages = new ArrayList<>();
         executor = new TerminalExecutor();
@@ -58,11 +56,20 @@ public class TerminalComponent extends WinUIComponent {
         this.suggestions = executor.showAutocomplete(this, content);
         System.out.println(suggestions);
     }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
     public void charPressed(char character) {
-        if(character=='`'){
+        /*if(character=='`'){
             active=!active;
             return;
-        }
+        }*/
         if(!active)
             return;
         content = (content + character).replaceAll("\\p{C}", "");
@@ -135,5 +142,14 @@ public class TerminalComponent extends WinUIComponent {
 
     public void clear() {
         messages.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "TerminalComponent{" +
+                ", backspaceTicks=" + backspaceTicks +
+                ", backspaceRemoveTicks=" + backspaceRemoveTicks +
+                ", active=" + active +
+                '}';
     }
 }

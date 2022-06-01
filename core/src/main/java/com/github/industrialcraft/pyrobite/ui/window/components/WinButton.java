@@ -51,4 +51,11 @@ public class WinButton extends WinUIComponent {
     public void clickedComponent(int x, int y) {
         runnable.run();
     }
+
+    @Override
+    public String toString() {
+        return "WinButton{" +
+                "content='" + content + '\'' +
+                '}';
+    }
 }

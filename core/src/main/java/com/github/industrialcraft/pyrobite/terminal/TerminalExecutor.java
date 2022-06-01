@@ -2,15 +2,20 @@ package com.github.industrialcraft.pyrobite.terminal;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.github.industrialcraft.pyrobite.PyrobiteMain;
 import com.github.industrialcraft.pyrobite.entity.Entity;
 import com.github.industrialcraft.pyrobite.scene.Scene;
 import com.github.industrialcraft.pyrobite.scene.SceneSaverLoader;
+import com.github.industrialcraft.pyrobite.ui.UIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.WinUIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.Window;
 import com.google.gson.JsonParser;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 
@@ -57,6 +62,9 @@ public class TerminalExecutor {
         }
     }
 
+    private final String treeShift = "  ";
+    private int tree = 0;
+
     private CommandDispatcher<CommandSourceData> dispatcher;
     public TerminalExecutor() {
         this.dispatcher = new CommandDispatcher<>();
@@ -94,6 +102,20 @@ public class TerminalExecutor {
 
             for (Entity entity : Scene.getInstance().getEntities()) {
                 context.getSource().terminal.shiftString("SDET:      EntityEntry: " + entity.toJson());
+            }
+            return 1;
+        }));
+
+        /*
+            UI details command
+         */
+        this.dispatcher.register(LiteralArgumentBuilder.<CommandSourceData>literal(ConsoleCommands.UDET.command).executes(context -> {
+
+            context.getSource().terminal.shiftString("UDET: UIDetails");
+            context.getSource().terminal.shiftString("UDET: Components: " + PyrobiteMain.getInstance().ui.componentSize());
+
+            for (UIComponent component : PyrobiteMain.getInstance().ui.components()) {
+                recursiveComponentAnalyzer((WinUIComponent) component, context);
             }
             return 1;
         }));
@@ -179,6 +201,26 @@ public class TerminalExecutor {
             }
             System.err.println(e.getMessage());
             c.shiftString(e.getMessage());
+        }
+    }
+
+    private void recursiveComponentAnalyzer(WinUIComponent component, CommandContext<CommandSourceData> context) {
+        StringBuilder treeSft = new StringBuilder();
+        for (int i = 0; i!=tree; i ++) {
+            treeSft.append(treeShift);
+        }
+
+        context.getSource().terminal.shiftString("UDET: " + treeShift + treeSft + component);
+        if (component instanceof Window) {
+
+            context.getSource().terminal.shiftString("UDET: " + treeShift + treeShift + treeSft + "content:");
+
+            Window window = (Window) component;
+            for (WinUIComponent component1 : window.getComponents()) {
+                tree ++;
+                recursiveComponentAnalyzer(component1, context);
+                tree --;
+            }
         }
     }
 }

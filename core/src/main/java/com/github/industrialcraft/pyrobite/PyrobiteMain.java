@@ -19,31 +19,26 @@ import com.google.gson.JsonParser;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class PyrobiteMain extends ApplicationAdapter {
-	private Scheduler scheduler;
-	private UI ui;
 
-	// TODO: REMOVE
-	public Window window;
+	private static PyrobiteMain instance;
+
+	private Scheduler scheduler;
+	public UI ui;
 
 	@Override
 	public void create() {
 		Gdx.input.setInputProcessor(new InputManager());
-
-
 		new TestTaskData();
-
-		//this.scene = new Scene();
 
 		SceneSaverLoader.load(new JsonParser().parse("{\"entities\": []}").getAsJsonObject());
 		Entity entity = new TestEntity(new Position(-100, -100));
 		Scene.getInstance().add(entity);
 		Scene.getInstance().setCameraEntity(entity);
 
-
-
 		this.scheduler = new Scheduler();
 		this.ui = new UI();
 
+		Window window;
 		window = new Window("Debug", 10, 10, 400, 160);
 		window.add(new WinLabel("Welcome to pyrobite!", 10, 135));
 		window.add(new WinLabel("Press '`' on your keyboard.", 10, 110));
@@ -52,17 +47,13 @@ public class PyrobiteMain extends ApplicationAdapter {
 				window.getWidth() - 100,
 				10,
 				80,
-				() ->  window.dispose()));
+				window::dispose));
 
 		this.ui.addComponent(window);
 
-		Window terminalW = new Window("a", 480, 10, 500, 800);
-		terminalW.add(new TerminalComponent(0, 0));
+		//this.ui.addComponent(new TerminalComponent(0, 0));
 
-		terminalW.add(new WinButton("Close", terminalW.getWidth() - 60, 0, 50, terminalW::dispose));
-		this.ui.addComponent(terminalW);
-
-		//this.ui.addComponent(new TerminalComponent());
+		instance = this;
 	}
 
 	@Override
@@ -94,5 +85,9 @@ public class PyrobiteMain extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		Scene.getInstance().dispose();
+	}
+
+	public static PyrobiteMain getInstance() {
+		return instance;
 	}
 }

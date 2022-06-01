@@ -1,12 +1,24 @@
 package com.github.industrialcraft.pyrobite.input;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.github.industrialcraft.pyrobite.PyrobiteMain;
+import com.github.industrialcraft.pyrobite.terminal.TerminalComponent;
+import com.github.industrialcraft.pyrobite.ui.window.Window;
+import com.github.industrialcraft.pyrobite.ui.window.components.WinButton;
 
 import java.util.ArrayList;
 
 public class InputManager implements InputProcessor {
 
     private static final ArrayList<InputProcessor> inputs = new ArrayList<>();
+    private Window terminalW;
+    private TerminalComponent terminalComponent;
+
+    public InputManager() {
+        terminalComponent = new TerminalComponent(0, 0);
+    }
 
     public static void addInput(InputProcessor processor) {
         inputs.add(processor);
@@ -18,6 +30,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+
         inputs.forEach((a) -> a.keyDown(keycode));
         return false;
     }
@@ -30,6 +43,24 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
+        if (character == '`') {
+            if (!PyrobiteMain.getInstance().ui.components().contains(terminalW)) {
+                terminalW = new Window("{Terminal}", 10, 10, 1200, 800);
+                terminalW.add(terminalComponent);
+                terminalW.add(new WinButton("Close", terminalW.getWidth() - 60, 0, 50, terminalW::dispose));
+
+                terminalComponent.setActive(true);
+
+                PyrobiteMain.getInstance().ui.addComponent(terminalW);
+                return false;
+            }
+            else {
+                terminalComponent.setActive(false);
+                terminalW.dispose();
+                return false;
+            }
+        }
+
         inputs.forEach((a) -> a.keyTyped(character));
         return false;
     }

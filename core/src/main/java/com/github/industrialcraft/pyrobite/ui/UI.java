@@ -89,4 +89,12 @@ public class UI {
         uiCamera.setToOrtho(false, w, h);
         uiCamera.update();
     }
+
+    public int componentSize() {
+        return components.size();
+    }
+
+    public ArrayList<UIComponent> components() {
+        return components;
+    }
 }

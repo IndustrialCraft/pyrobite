@@ -28,7 +28,7 @@ public class Window extends WinUIComponent {
 
     private float previousWidth;
     private boolean beingRemoved;
-    private int removeIndex;
+    private int animationIndex;
 
     private static final AssetLoader.Asset<Texture> leftSide =
             AssetLoader.getInstance().getTexture("window/window_side_left.png");
@@ -48,7 +48,7 @@ public class Window extends WinUIComponent {
         this.input = new WindowInput(this);
         this.undecorated = false;
         this.beingRemoved = false;
-        this.removeIndex = 0;
+        this.animationIndex = 0;
         this.canBeRemoved = false;
 
         InputManager.addInput(this.input);
@@ -77,14 +77,14 @@ public class Window extends WinUIComponent {
         float y = isEmbedded ? getWindowUpdatedPosY() : getPositionY();
 
         if (beingRemoved) {
-            if (previousWidth - removeIndex <= 2) {
+            if (previousWidth - animationIndex <= 2) {
                 beingRemoved = false;
                 canBeRemoved = true;
                 return;
             }
 
-            x = x + removeIndex/2f;
-            setWidth(previousWidth - removeIndex);
+            x = x + animationIndex /2f;
+            setWidth(previousWidth - animationIndex);
         }
 
 
@@ -97,7 +97,7 @@ public class Window extends WinUIComponent {
         }
 
         if (beingRemoved) {
-            removeIndex += getWidth() / 3f;
+            animationIndex += getWidth() / 3f;
             return;
         }
 
@@ -150,9 +150,13 @@ public class Window extends WinUIComponent {
     }
 
     public void dispose() {
+        if (beingRemoved) {
+            return;
+        }
+
         this.previousWidth = getWidth();
         this.beingRemoved = true;
-        this.removeIndex = 0;
+        this.animationIndex = 0;
 
         prepareToRemove();
     }
@@ -163,5 +167,21 @@ public class Window extends WinUIComponent {
 
     public boolean canBeRemoved() {
         return canBeRemoved;
+    }
+
+    public ArrayList<WinUIComponent> getComponents() {
+        return components;
+    }
+
+    @Override
+    public String toString() {
+        return "Window{" +
+                " canBeRemoved=" + canBeRemoved +
+                ", undecorated=" + undecorated +
+                ", isEmbedded=" + isEmbedded +
+                ", previousWidth=" + previousWidth +
+                ", beingRemoved=" + beingRemoved +
+                ", animationIndex=" + animationIndex +
+                '}';
     }
 }

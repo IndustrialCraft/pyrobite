@@ -45,4 +45,10 @@ public class WinProgressbar extends WinUIComponent {
 
     }
 
+    @Override
+    public String toString() {
+        return "WinProgressbar{" +
+                "percentage=" + percentage +
+                '}';
+    }
 }

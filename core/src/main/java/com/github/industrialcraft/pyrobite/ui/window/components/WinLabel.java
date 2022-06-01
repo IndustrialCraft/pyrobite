@@ -44,4 +44,11 @@ public class WinLabel extends WinUIComponent {
 
     }
 
+    @Override
+    public String toString() {
+        return "WinLabel{" +
+                "font=" + font +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
