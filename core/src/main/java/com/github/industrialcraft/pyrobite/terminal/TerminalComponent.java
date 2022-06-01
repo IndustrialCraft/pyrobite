@@ -94,7 +94,7 @@ public class TerminalComponent extends UIComponent {
             String message = messages.get(messages.size()-1 - i);
 
             if (index > 40) {
-                font.draw(spriteBatch, "...", 10, 30 + ((index+1) * font.getLineHeight()));
+                font.draw(spriteBatch, "...", 10, 30 + ((index+2) * font.getLineHeight()));
                 break;
             }
 

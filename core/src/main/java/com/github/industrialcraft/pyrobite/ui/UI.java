@@ -24,7 +24,8 @@ public class UI {
         this.uiCamera = new OrthographicCamera(2000, 2000);
     }
 
-    public void addComponent(UIComponent component){
+    public void addComponent(UIComponent component) {
+        component.setUserInterface(this);
         this.components.add(component);
     }
 

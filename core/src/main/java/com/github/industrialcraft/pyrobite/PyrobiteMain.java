@@ -52,21 +52,9 @@ public class PyrobiteMain extends ApplicationAdapter {
 				window.getWidth() - 100,
 				10,
 				80,
-				() ->
-				{this.ui.removeComponent(window);}));
+				() ->  window.dispose()));
 
 		this.ui.addComponent(window);
-
-		Window mousePopup = new Window("MousePopup", 0, 0, 300, 100);
-		mousePopup.setUpdater(() -> {
-			mousePopup.setPositionX(Gdx.input.getX());
-			mousePopup.setPositionY(Gdx.graphics.getHeight() - Gdx.input.getY());
-		});
-		mousePopup.add(new WinButton("Can't click me!", 0, 0, 140, ()->{
-			System.out.println("how?");
-		}));
-
-		this.ui.addComponent(mousePopup.asUndecorated());
 
 		this.ui.addComponent(new TerminalComponent());
 	}
