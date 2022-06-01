@@ -18,6 +18,8 @@ public class Window extends WinUIComponent {
 
     private Runnable updateRunnable;
 
+    private boolean canBeRemoved;
+
     private final ArrayList<WinUIComponent> components;
     private final WindowInput input;
 
@@ -47,6 +49,7 @@ public class Window extends WinUIComponent {
         this.undecorated = false;
         this.beingRemoved = false;
         this.removeIndex = 0;
+        this.canBeRemoved = false;
 
         InputManager.addInput(this.input);
 
@@ -76,7 +79,7 @@ public class Window extends WinUIComponent {
         if (beingRemoved) {
             if (previousWidth - removeIndex <= 2) {
                 beingRemoved = false;
-                this.getUserInterface().removeComponent(this);
+                canBeRemoved = true;
                 return;
             }
 
@@ -115,8 +118,9 @@ public class Window extends WinUIComponent {
         float my = Gdx.graphics.getHeight() - y;
 
         for (WinUIComponent component : components) {
-            if (isInBoundingBox(component.getPositionX() + 10,
-                    component.getPositionY() + 12,
+            if (isInBoundingBox(
+                    component.getWindowUpdatedPosX(),
+                    component.getWindowUpdatedPosY(),
                     component.getWidth(),
                     component.getHeight(),
                     x,
@@ -132,6 +136,7 @@ public class Window extends WinUIComponent {
     }
 
     public Window add(WinUIComponent component) {
+        component.setParent(this);
         components.add(component);
         return this;
     }
@@ -154,5 +159,9 @@ public class Window extends WinUIComponent {
 
     public void prepareToRemove() {
         InputManager.removeInput(this.input);
+    }
+
+    public boolean canBeRemoved() {
+        return canBeRemoved;
     }
 }

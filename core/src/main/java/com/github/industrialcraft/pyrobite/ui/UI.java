@@ -10,7 +10,9 @@ import com.github.industrialcraft.pyrobite.ui.window.Window;
 import java.util.ArrayList;
 
 public class UI {
-    private ArrayList<UIComponent> components;
+
+    private final ArrayList<UIComponent> components;
+    private final ArrayList<Window> windows;
 
     public SpriteBatch spriteBatch;
     public ShapeRenderer shapeRenderer;
@@ -18,6 +20,7 @@ public class UI {
 
     public UI() {
         this.components = new ArrayList<>();
+        this.windows = new ArrayList<>();
         this.spriteBatch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.shapeRenderer.setAutoShapeType(true);
@@ -40,6 +43,17 @@ public class UI {
 
     public void render() {
 
+        windows.clear();
+
+        for (UIComponent component : components)
+            if (component instanceof Window)
+                if (((Window) component).canBeRemoved())
+                    windows.add((Window) component);
+
+        for (Window window : windows) {
+            removeComponent(window);
+        }
+
         if (TerminalExecutor.commandCamera != null) {
             this.uiCamera = TerminalExecutor.commandCamera;
             TerminalExecutor.commandCamera = null;
@@ -50,12 +64,22 @@ public class UI {
         //shapeRenderer.setTransformMatrix(uiCamera.view);
         shapeRenderer.setProjectionMatrix(uiCamera.combined);
 
+        try {
+            componentRender();
+        }
+        catch (Exception e) {
+            componentRender();
+        }
+    }
+
+    public void componentRender() {
         for(UIComponent component : this.components){
             spriteBatch.begin();
             component.render(spriteBatch, shapeRenderer, uiCamera);
             spriteBatch.end();
         }
     }
+
     public Camera getUICamera() {
         return uiCamera;
     }

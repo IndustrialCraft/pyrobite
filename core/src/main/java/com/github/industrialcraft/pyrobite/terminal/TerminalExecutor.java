@@ -45,6 +45,7 @@ public class TerminalExecutor {
         EXIT("exit", "Closes game"),
         CLEAR("clear", "Clears terminal"),
         SDET("sdet", "Prints scene details"),
+        UDET("udet", "UI Details"),
         NCAM("nuicam", "Creates new UI camera"),
         FPS ("fps", "Show frames per second");
 
@@ -130,13 +131,8 @@ public class TerminalExecutor {
 
                     context.getSource().terminal.shiftString("NCAM: New camera was assigned.");
                     return 1;
-        }))))).executes(context -> {
-                    context.getSource().terminal.shiftString("NCAM: Creating new camera..");
-                    commandCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                    commandCamera.position.set(0, 0, 0);
-                    context.getSource().terminal.shiftString("NCAM: New camera was assigned.");
-            return 0;
-        }));
+        }))))));
+
         /*
             Help command,
             TODO: Update

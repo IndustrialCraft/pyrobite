@@ -56,7 +56,13 @@ public class PyrobiteMain extends ApplicationAdapter {
 
 		this.ui.addComponent(window);
 
-		this.ui.addComponent(new TerminalComponent());
+		Window terminalW = new Window("a", 480, 10, 500, 800);
+		terminalW.add(new TerminalComponent(0, 0));
+
+		terminalW.add(new WinButton("Close", terminalW.getWidth() - 60, 0, 50, terminalW::dispose));
+		this.ui.addComponent(terminalW);
+
+		//this.ui.addComponent(new TerminalComponent());
 	}
 
 	@Override

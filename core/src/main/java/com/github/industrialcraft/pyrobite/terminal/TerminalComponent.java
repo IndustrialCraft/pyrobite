@@ -8,11 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.input.InputManager;
 import com.github.industrialcraft.pyrobite.ui.UIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.WinUIComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TerminalComponent extends UIComponent {
+public class TerminalComponent extends WinUIComponent {
 
     public static BitmapFont font;
 
@@ -27,8 +28,8 @@ public class TerminalComponent extends UIComponent {
     private List<String> suggestions;
 
 
-    public TerminalComponent() {
-        super();
+    public TerminalComponent(float x, float y) {
+        super(x, y, 0, 0);
         this.active = false;
 
 
@@ -93,8 +94,8 @@ public class TerminalComponent extends UIComponent {
         for (int i = 0; i != messages.size(); i++) {
             String message = messages.get(messages.size()-1 - i);
 
-            if (index > 40) {
-                font.draw(spriteBatch, "...", 10, 30 + ((index+2) * font.getLineHeight()));
+            if ((index+3) * font.getLineHeight() >= getParent().getHeight()) {
+                font.draw(spriteBatch, "...", getWindowUpdatedPosX(), getWindowUpdatedPosY() + 30 + ((index+1) * font.getLineHeight()));
                 break;
             }
 
@@ -102,11 +103,16 @@ public class TerminalComponent extends UIComponent {
                 message = "(!!) Warning null-message NULL";
             }
 
-            font.draw(spriteBatch, message, 10, 50 + ((index+1) * font.getLineHeight()));
+            font.draw(spriteBatch, message, getWindowUpdatedPosX(), getWindowUpdatedPosY() + 30  + ((index+1) * font.getLineHeight()));
             index ++;
         }
 
-        font.draw(spriteBatch, "pyrobite_Engine: / " + content, 10, 50);
+        font.draw(spriteBatch, "pyrobite_Engine: / " + content, getWindowUpdatedPosX(), getWindowUpdatedPosY() + 30);
+
+    }
+
+    @Override
+    public void clickedComponent(int x, int y) {
 
     }
 

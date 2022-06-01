@@ -7,6 +7,8 @@ import com.github.industrialcraft.pyrobite.ui.UIComponent;
 
 public abstract class WinUIComponent extends UIComponent {
 
+    private Window parent;
+
     private float windowUpdatedPosX;
     private float windowUpdatedPosY;
 
@@ -73,5 +75,13 @@ public abstract class WinUIComponent extends UIComponent {
 
     public float getWindowUpdatedPosY() {
         return windowUpdatedPosY;
+    }
+
+    public void setParent(Window parent) {
+        this.parent = parent;
+    }
+
+    public Window getParent() {
+        return parent;
     }
 }
