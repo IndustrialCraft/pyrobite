@@ -73,7 +73,10 @@ public class UI {
     }
 
     public void componentRender() {
-        for(UIComponent component : this.components){
+        for (UIComponent component : this.components) {
+            if (spriteBatch.isDrawing())
+                spriteBatch.end();
+
             spriteBatch.begin();
             component.render(spriteBatch, shapeRenderer, uiCamera);
             spriteBatch.end();

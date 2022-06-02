@@ -4,10 +4,12 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.industrialcraft.pyrobite.ui.UIComponent;
+import com.github.industrialcraft.pyrobite.ui.window.lookandfeel.LookAndFeel;
 
 public abstract class WinUIComponent extends UIComponent {
 
     private Window parent;
+    private LookAndFeel lookAndFeel;
 
     private float windowUpdatedPosX;
     private float windowUpdatedPosY;
@@ -79,6 +81,14 @@ public abstract class WinUIComponent extends UIComponent {
 
     public void setParent(Window parent) {
         this.parent = parent;
+    }
+
+    public void setLookAndFeel(LookAndFeel lookAndFeel) {
+        this.lookAndFeel = lookAndFeel;
+    }
+
+    public LookAndFeel getLookAndFeel() {
+        return lookAndFeel;
     }
 
     public Window getParent() {

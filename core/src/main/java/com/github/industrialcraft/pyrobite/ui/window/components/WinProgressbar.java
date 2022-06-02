@@ -11,16 +11,6 @@ public class WinProgressbar extends WinUIComponent {
 
     private int percentage = 100;
 
-    private static final AssetLoader.Asset<Texture> start =
-            AssetLoader.getInstance().getTexture("window/progress_bar_start.png");
-    private static final AssetLoader.Asset<Texture> middle =
-            AssetLoader.getInstance().getTexture("window/progress_bar_middle.png");
-    private static final AssetLoader.Asset<Texture> end =
-            AssetLoader.getInstance().getTexture("window/progress_bar_end.png");
-
-    private static final AssetLoader.Asset<Texture> progress =
-            AssetLoader.getInstance().getTexture("window/progress.png");
-
     public WinProgressbar(float positionX, float positionY, float width) {
         super(positionX, positionY, width, 30);
     }
@@ -33,11 +23,10 @@ public class WinProgressbar extends WinUIComponent {
             percentage = 0;
         }
 
-        spriteBatch.draw(middle.get(), getWindowUpdatedPosX() + 10, getWindowUpdatedPosY(), getWidth() - 10, getHeight());
-        spriteBatch.draw(start.get(), getWindowUpdatedPosX(), getWindowUpdatedPosY(), 10, getHeight());
-        spriteBatch.draw(end.get(), getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 10, getHeight());
-
-        spriteBatch.draw(progress.get(), getWindowUpdatedPosX() + 10, getWindowUpdatedPosY() + 5, (getWidth()-10)/100*percentage, 20);
+        spriteBatch.draw(getLookAndFeel().PROGRESSBAR_CENTER, getWindowUpdatedPosX() + 10, getWindowUpdatedPosY(), getWidth() - 10, getHeight());
+        spriteBatch.draw(getLookAndFeel().PROGRESSBAR_BEGIN, getWindowUpdatedPosX(), getWindowUpdatedPosY(), 10, getHeight());
+        spriteBatch.draw(getLookAndFeel().PROGRESSBAR_END, getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 10, getHeight());
+        spriteBatch.draw(getLookAndFeel().PROGRESSBAR_CONTENT, getWindowUpdatedPosX() + 10, getWindowUpdatedPosY() + 5, (getWidth()-10)/100*percentage, 20);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.github.industrialcraft.pyrobite.PyrobiteMain;
 import com.github.industrialcraft.pyrobite.terminal.TerminalComponent;
 import com.github.industrialcraft.pyrobite.ui.window.Window;
 import com.github.industrialcraft.pyrobite.ui.window.components.WinButton;
+import com.github.industrialcraft.pyrobite.ui.window.lookandfeel.LookAndFeelConstants;
 
 import java.util.ArrayList;
 
@@ -45,20 +46,23 @@ public class InputManager implements InputProcessor {
     public boolean keyTyped(char character) {
         if (character == '`') {
             if (!PyrobiteMain.getInstance().ui.components().contains(terminalW)) {
-                terminalW = new Window("{Terminal}", 10, 10, 1200, 800);
-                terminalW.add(terminalComponent);
-                terminalW.add(new WinButton("Close", terminalW.getWidth() - 60, 0, 50, terminalW::dispose));
+
+                terminalW = new Window("{Terminal}", 10, 10, Gdx.graphics.getWidth() - 20, Gdx.graphics.getHeight()-20);
+                terminalW.add(new WinButton("Close", terminalW.getWidth() - 80, 0, 50, terminalW::dispose));
+                terminalW.setAnimated(false);
+                terminalW.setUndecorated(true);
 
                 terminalComponent.setActive(true);
+                terminalW.add(terminalComponent);
 
                 PyrobiteMain.getInstance().ui.addComponent(terminalW);
-                return false;
             }
             else {
                 terminalComponent.setActive(false);
                 terminalW.dispose();
-                return false;
             }
+
+            return false;
         }
 
         inputs.forEach((a) -> a.keyTyped(character));

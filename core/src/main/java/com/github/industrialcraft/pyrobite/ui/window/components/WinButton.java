@@ -12,17 +12,10 @@ import com.github.industrialcraft.pyrobite.ui.window.WinUIComponent;
 
 public class WinButton extends WinUIComponent {
 
-    private String content;
-    private Runnable runnable;
-    private BitmapFont font;
-    private GlyphLayout layout;
-
-    private static final AssetLoader.Asset<Texture> start =
-            AssetLoader.getInstance().getTexture("window/button_begin.png");
-    private static final AssetLoader.Asset<Texture> middle =
-            AssetLoader.getInstance().getTexture("window/button_center.png");
-    private static final AssetLoader.Asset<Texture> end =
-            AssetLoader.getInstance().getTexture("window/button_end.png");
+    private final String content;
+    private final Runnable runnable;
+    private final BitmapFont font;
+    private final GlyphLayout layout;
 
     public WinButton(String content, float positionX, float positionY, float width, Runnable click) {
         super(positionX, positionY, width, 32);
@@ -35,9 +28,9 @@ public class WinButton extends WinUIComponent {
 
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Camera camera) {
-        spriteBatch.draw(middle.get(), getWindowUpdatedPosX() + 8, getWindowUpdatedPosY(), getWidth() - 8, getHeight());
-        spriteBatch.draw(start.get(), getWindowUpdatedPosX(), getWindowUpdatedPosY(), 8, getHeight());
-        spriteBatch.draw(end.get(), getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 8, getHeight());
+        spriteBatch.draw(getLookAndFeel().BUTTON_CENTER, getWindowUpdatedPosX() + 8, getWindowUpdatedPosY(), getWidth() - 8, getHeight());
+        spriteBatch.draw(getLookAndFeel().BUTTON_BEGIN, getWindowUpdatedPosX(), getWindowUpdatedPosY(), 8, getHeight());
+        spriteBatch.draw(getLookAndFeel().BUTTON_END, getWindowUpdatedPosX() + getWidth(), getWindowUpdatedPosY(), 8, getHeight());
 
         font.draw(spriteBatch, content, getWindowUpdatedPosX() + (getWidth()-wForStr())/2, getWindowUpdatedPosY() + getHeight() - 10);
     }

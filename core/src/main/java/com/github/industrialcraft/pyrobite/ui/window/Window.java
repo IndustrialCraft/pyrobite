@@ -9,6 +9,7 @@ import com.github.industrialcraft.pyrobite.AssetLoader;
 
 import com.github.industrialcraft.pyrobite.input.InputManager;
 import com.github.industrialcraft.pyrobite.ui.window.components.WinLabel;
+import com.github.industrialcraft.pyrobite.ui.window.lookandfeel.LookAndFeelConstants;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class Window extends WinUIComponent {
     private final WindowInput input;
 
     private boolean undecorated;
+    private boolean isAnimated;
     private boolean isEmbedded;
 
     private float previousWidth;
@@ -46,15 +48,19 @@ public class Window extends WinUIComponent {
 
         this.components = new ArrayList<>();
         this.input = new WindowInput(this);
-        this.undecorated = false;
-        this.beingRemoved = false;
+
         this.animationIndex = 0;
+        this.isAnimated = true;
+        this.beingRemoved = false;
         this.canBeRemoved = false;
+        this.undecorated = false;
+
+        this.setLookAndFeel(LookAndFeelConstants.WOODEN_LOOK_AND_FEEL);
 
         InputManager.addInput(this.input);
 
         if (RENDER_WINDOW_NAMES)
-            this.components.add(new WinLabel(name, 0, getHeight() - 80));
+            this.components.add(new WinLabel(name + " {Window}", 0, getHeight() - 8));
     }
 
     public Window asEmbedded() {
@@ -76,7 +82,7 @@ public class Window extends WinUIComponent {
         float x = isEmbedded ? getWindowUpdatedPosX() : getPositionX();
         float y = isEmbedded ? getWindowUpdatedPosY() : getPositionY();
 
-        if (beingRemoved) {
+        if (beingRemoved && isAnimated) {
             if (previousWidth - animationIndex <= 2) {
                 beingRemoved = false;
                 canBeRemoved = true;
@@ -85,26 +91,24 @@ public class Window extends WinUIComponent {
 
             x = x + animationIndex /2f;
             setWidth(previousWidth - animationIndex);
-        }
 
+            animationIndex += getWidth() / 3f;
+        }
 
         if (!undecorated) {
-            spriteBatch.draw(center.get(), x, y, getWidth(), getHeight());
-            spriteBatch.draw(leftSide.get(), x - 5, y, 10, getHeight());
-            spriteBatch.draw(rightSide.get(), x + getWidth(), y, 10, getHeight());
-            spriteBatch.draw(bottom.get(), x, y - 5, getWidth() + 5, 10);
-            spriteBatch.draw(top.get(), x, y - 5 + getHeight(), getWidth() + 5, 10);
+            spriteBatch.draw(getLookAndFeel().WINDOW_SIDE_CENTER, x, y, getWidth(), getHeight());
+            spriteBatch.draw(getLookAndFeel().WINDOW_SIDE_LEFT, x - 5, y, 10, getHeight());
+            spriteBatch.draw(getLookAndFeel().WINDOW_SIDE_RIGHT, x + getWidth(), y, 10, getHeight());
+            spriteBatch.draw(getLookAndFeel().WINDOW_SIDE_BOTTOM, x, y - 5, getWidth() + 5, 10);
+            spriteBatch.draw(getLookAndFeel().WINDOW_SIDE_TOP, x, y - 5 + getHeight(), getWidth() + 5, 10);
         }
 
-        if (beingRemoved) {
-            animationIndex += getWidth() / 3f;
-            return;
-        }
-
-        for (WinUIComponent component : components) {
-            component.setWindowUpdatedPosX(x + component.getPositionX() + 4);
-            component.setWindowUpdatedPosY(y + component.getPositionY() + 4);
-            component.render(spriteBatch, shapeRenderer, camera);
+        if (!beingRemoved) {
+            for (WinUIComponent component : components) {
+                component.setWindowUpdatedPosX(x + component.getPositionX() + 4);
+                component.setWindowUpdatedPosY(y + component.getPositionY() + 4);
+                component.render(spriteBatch, shapeRenderer, camera);
+            }
         }
     }
 
@@ -136,7 +140,9 @@ public class Window extends WinUIComponent {
     }
 
     public Window add(WinUIComponent component) {
+        component.setLookAndFeel(getLookAndFeel());
         component.setParent(this);
+
         components.add(component);
         return this;
     }
@@ -150,6 +156,13 @@ public class Window extends WinUIComponent {
     }
 
     public void dispose() {
+        if (!isAnimated) {
+            this.canBeRemoved = true;
+            this.beingRemoved = false;
+            prepareToRemove();
+            return;
+        }
+
         if (beingRemoved) {
             return;
         }
@@ -173,15 +186,36 @@ public class Window extends WinUIComponent {
         return components;
     }
 
+    public void setEmbedded(boolean embedded) {
+        isEmbedded = embedded;
+    }
+
+    public void setUndecorated(boolean undecorated) {
+        this.undecorated = undecorated;
+    }
+
+    public void setAnimated(boolean animated) {
+        isAnimated = animated;
+    }
+
+    public boolean isAnimated() {
+        return isAnimated;
+    }
+
+    public boolean isBeingRemoved() {
+        return beingRemoved;
+    }
+
     @Override
     public String toString() {
         return "Window{" +
-                " canBeRemoved=" + canBeRemoved +
+                "canBeRemoved=" + canBeRemoved +
                 ", undecorated=" + undecorated +
                 ", isEmbedded=" + isEmbedded +
                 ", previousWidth=" + previousWidth +
                 ", beingRemoved=" + beingRemoved +
                 ", animationIndex=" + animationIndex +
+                ", isAnimated=" + isAnimated +
                 '}';
     }
 }
