@@ -32,17 +32,6 @@ public class Window extends WinUIComponent {
     private boolean beingRemoved;
     private int animationIndex;
 
-    private static final AssetLoader.Asset<Texture> leftSide =
-            AssetLoader.getInstance().getTexture("window/window_side_left.png");
-    private static final AssetLoader.Asset<Texture> rightSide =
-            AssetLoader.getInstance().getTexture("window/window_side_right.png");
-    private static final AssetLoader.Asset<Texture> center =
-            AssetLoader.getInstance().getTexture("window/window_internal.png");
-    private static final AssetLoader.Asset<Texture> top =
-            AssetLoader.getInstance().getTexture("window/window_side_top.png");
-    private static final AssetLoader.Asset<Texture> bottom =
-            AssetLoader.getInstance().getTexture("window/window_side_bottom.png");
-
     public Window(String name, int x, int y, float width, float height) {
         super(x, y, width, height);
 
